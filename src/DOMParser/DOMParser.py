@@ -52,7 +52,7 @@ def parseSeleniumTreeRec(driver, root, currentElem, extractStyle):
 # Attributes: driver = Selenium driver; xpath = XPath to currently investigated element
 def parseStyle(driver, xpath):
     try:
-        elem = driver.find_element_by_xpath(xpath)
+        elem = driver.find_element("xpath",xpath) # Deprecated find_element_by_* and find_elements_by_* are now removed (#10712)
         sizeStr = str(elem.value_of_css_property('font-size'))
         size = float(sizeStr[:(len(sizeStr) - 2)])
         style = Font(\
