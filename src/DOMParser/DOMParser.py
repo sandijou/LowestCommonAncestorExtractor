@@ -32,7 +32,7 @@ def parseSeleniumTreeRec(driver, root, currentElem, extractStyle):
         if isinstance(child, str):
             cutted = cutStrToVisibleContent(child)
             childList.append(TextElement(cutted))
-        elif not ((str(child.tag) + '$') in getListOfUnrederedTags()) and not ('Comment' in str(child.tag)):
+        elif not ('Comment' in str(child.tag)):         #((str(child.tag) + '$') in getListOfUnrederedTags()) and not 
             treeElement = TreeElement()
             xpath = root.getpath(child)
             treeElement.attributes = child.attrib
@@ -46,6 +46,28 @@ def parseSeleniumTreeRec(driver, root, currentElem, extractStyle):
             None
     return childList
 
+
+'''
+def parseSeleniumTreeRec(driver, root, currentElem, extractStyle):
+    childList = []
+    for child in currentElem:
+        if isinstance(child, str):
+            cutted = cutStrToVisibleContent(child)
+            childList.append(TextElement(cutted))
+        elif not ((str(child.tag) + '$') in getListOfUnrederedTags()) and not ('Comment' in str(child.tag)):
+            treeElement = TreeElement()
+            xpath = root.getpath(child)
+            treeElement.attributes = child.attrib
+            treeElement.tag = child.tag
+            treeElement.xpath = xpath
+            if extractStyle:
+                treeElement.style = parseStyle(driver, xpath)
+            treeElement.children = parseSeleniumTreeRec(driver, root, child.xpath('child::node()'), extractStyle)
+            childList.append(treeElement)
+        else:
+            None
+    return childList
+'''
 
 
 # Parse style of given element.
