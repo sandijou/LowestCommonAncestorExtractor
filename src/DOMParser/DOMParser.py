@@ -86,7 +86,7 @@ def parseStyle(driver, xpath):
         return style
     except:
         # FALLBACK for failed style extraction
-        return Font(16, 400, False, 'Times New Roman') #Font(1, 300, False, 'undefined')
+        return Font(1, 300, False, 'undefined') #Font(16, 400, False, 'Times New Roman')
 
 
 
