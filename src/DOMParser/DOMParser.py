@@ -84,8 +84,11 @@ def parseStyle(driver, xpath):
                 str(elem.value_of_css_property('font-family'))\
             )
         return style
-    except:
-        # FALLBACK for failed style extraction
+    except Exception as e:
+        # Print exception for debugging
+        print("Exception occurred during style parsing:", str(e))
+
+        # Return a fallback style object
         return Font(1, 300, False, 'undefined') #Font(16, 400, False, 'Times New Roman')
 
 
