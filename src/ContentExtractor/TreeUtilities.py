@@ -22,7 +22,7 @@ def getDepth(node):
 def getFrequencyOfStyles(node, contentExtractor):
     classes = dict()
     if isinstance(node, TreeElement):
-        style = getStyle(node, node, contentExtractor)
+        style = getStyle(node, contentExtractor)
         noC = numberOfCharacters(node, contentExtractor)
         classes[style] = noC
     getStylesRec(classes, node, contentExtractor)
