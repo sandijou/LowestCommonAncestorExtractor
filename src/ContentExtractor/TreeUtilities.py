@@ -36,7 +36,7 @@ def getFrequencyOfStyles(node, contentExtractor):
 def getStylesRec(classes, node, contentExtractor):
     for child in node.children:
         style = getStyle(child, node, contentExtractor)
-        #print(style + '\t' + str(c.text))
+        print(style + '\t' + str(c.text))
         if style in classes.keys():
             classes[style] = classes[style] + numberOfCharacters(child, contentExtractor)
         else:
