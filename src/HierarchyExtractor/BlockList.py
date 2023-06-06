@@ -111,14 +111,17 @@ def getTFListRec(node, toFill):
 # Return list of all tags + '$' rendered as a paragraph in HTML documents.
 # These tags trigger a 'split' during the formation of a TF list.
 def getParagraphFormingTags():
-    return ['article$', 'section$', 'nav$', 'aside$', 'h1$', 'h2$', 'h3$', 'h4$', 'h5$', 'h6$', 'hgroup$',
+    return ['article$', 'section$', 'nav$', 'aside$', 'h1$', 'h2$', 'h3$', 'h4$', 'h5$', 'h6$', 'hgroup$', 'header$',
+        'footer$', 'address$', 'p$', 'pre$', 'blockquote$', 'ol$', 'ul$', 'menu$', 'li$', 'dl$', 'dt$', 'dt$', 'dd$',
+        'figure$', 'figcaption$', 'main$', 'div$', 'summary$', 'td$', 'th$', 'caption$', 'legend$', 'form$',
+        'fieldset$', 'details$']
+
+'''
+# modified for OLD Cases files: (not properly tested yet)
+['article$', 'section$', 'nav$', 'aside$', 'h1$', 'h2$', 'h3$', 'h4$', 'h5$', 'h6$', 'hgroup$',
             'header$', 'footer$', 'address$', 'p$', 'pre$', 'blockquote$', 'ol$', 'ul$', 'menu$', 'li$', 'dl$',
             'dt$', 'dd$', 'figure$', 'figcaption$', 'main$', 'div$', 'summary$', 'td$', 'th$', 'caption$', 'legend$',
             'form$', 'fieldset$', 'details$', 'span$', 'a$', 'hr$', 'b$', 'u$', 'strong$', 'table$',
             'tr$', 'tbody$', 'col$', 'i$', 'em$']
 '''
-['article$', 'section$', 'nav$', 'aside$', 'h1$', 'h2$', 'h3$', 'h4$', 'h5$', 'h6$', 'hgroup$', 'header$',
-        'footer$', 'address$', 'p$', 'pre$', 'blockquote', 'ol$', 'ul$', 'menu$', 'li$', 'dl$', 'dt$', 'dt$', 'dd$',
-        'figure$', 'figcaption$', 'main$', 'div$', 'summary$', 'td$', 'th$', 'caption$', 'legend$', 'form$',
-        'fieldset$', 'details$']
-'''
+
