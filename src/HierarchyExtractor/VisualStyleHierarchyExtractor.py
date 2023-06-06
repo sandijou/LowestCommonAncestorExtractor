@@ -37,32 +37,45 @@ def separateBlocksRec(nodeList, defaultStyle):
     # find next headline style
     headlineStyle = findNextHeadlineStyle(nodeList, defaultStyle)
     if headlineStyle is None:
-        return nodeList
+        # create list of all noneStyleHeadLine occurrences
+        for i in range(0, len(nodeList)):
+            #print(f'\n NoneStyle Nodelist entry at index [i] attribute Text: {nodeList[i].text}\n')
+            # new if condition to try fallback solution of regex headline matching including spaced-out words
+            if is_valid_headline(nodeList[i].text):
+                headLineList.append(i)
+                #print(f"valid_headline (Nonestyle): {repr(nodeList[i].text)}\n")
+        if headLineList == []:
+            return nodeList
 
     else:
         headLineList = []
         # create list of all headline style occurrences
         for i in range(0, len(nodeList)):
+             #print(f'\n Nodelist instance at index [i] attribute Text: {nodeList[i].text}\n')
             if nodeList[i].style == headlineStyle:
                 headLineList.append(i)
+            # new else if condition to try fallback solution of regex headline matching including spaced-out words
+            if is_valid_headline(nodeList[i].text):
+                headLineList.append(i)
+                #print(f"valid headline with headlineStyle: {headlineStyle}: \n{repr(nodeList[i].text)}\n")
+        
+    # save all blocks before the headline as content to the current node
+    childListToReturn = []
+    if headLineList != []:
+        childListToReturn = nodeList[0:headLineList[0]]
 
-        # save all blocks before the headline as content to the current node
-        childListToReturn = []
-        if headLineList != []:
-            childListToReturn = nodeList[0:headLineList[0]]
+    # split the block list according to headline style occurrences and recursively process the
+    # content in between headlines
+    for i in range(0, len(headLineList)):
+        toAppend = BlockNode()
+        toAppend.headline = nodeList[headLineList[i]]
+        if i == len(headLineList) - 1:
+            toAppend.children = separateBlocksRec(nodeList[(headLineList[i] + 1):len(nodeList)], defaultStyle)
+        else:
+            toAppend.children = separateBlocksRec(nodeList[(headLineList[i] + 1):headLineList[i+1]], defaultStyle)
+        childListToReturn.append(toAppend)
 
-        # split the block list according to headline style occurrences and recursively process the
-        # content in between headlines
-        for i in range(0, len(headLineList)):
-            toAppend = BlockNode()
-            toAppend.headline = nodeList[headLineList[i]]
-            if i == len(headLineList) - 1:
-                toAppend.children = separateBlocksRec(nodeList[(headLineList[i] + 1):len(nodeList)], defaultStyle)
-            else:
-                toAppend.children = separateBlocksRec(nodeList[(headLineList[i] + 1):headLineList[i+1]], defaultStyle)
-            childListToReturn.append(toAppend)
-
-        return childListToReturn
+    return childListToReturn
 
 
 
