@@ -35,6 +35,7 @@ def separateBlocks(blockList, defaultStyle):
 def separateBlocksRec(nodeList, defaultStyle):
 
     # find next headline style
+    headLineList = []
     headlineStyle = findNextHeadlineStyle(nodeList, defaultStyle)
     if headlineStyle is None:
         # create list of all noneStyleHeadLine occurrences
@@ -48,7 +49,6 @@ def separateBlocksRec(nodeList, defaultStyle):
             return nodeList
 
     else:
-        headLineList = []
         # create list of all headline style occurrences
         for i in range(0, len(nodeList)):
              #print(f'\n Nodelist instance at index [i] attribute Text: {nodeList[i].text}\n')
