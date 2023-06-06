@@ -9,30 +9,26 @@ class EnumerationType(Enum):
     Alphabetic = 3
     List = 4
 
+# Compiled regex patterns for faster execution
+roman_pattern = re.compile("[IVXLivxl]{1,7}")
+numeric_pattern = re.compile("[0-9]{1,2}")
+alphabetic_pattern = re.compile("[a-zA-Z]")
+
 # Retrieve numeration from given text.
 def getNumeration(txt):
     # Looking for possible numerations in text.
-    possibleNums = re.search("\s[\(§]?(([IVXLivxl]{1,7})|([0-9]{1,2})|[a-zA-Z])([\.\-,:](([IVXLivxl]{1,7})|([0-9]{1,2})|[a-zA-Z]))*[\-:\.)]?\s", ' ' + txt + ' ')
-    if possibleNums is None:
+    possible_nums = re.search("\s[\(§]?(([IVXLivxl]{1,7})|([0-9]{1,2})|[a-zA-Z])([\.\-,:](([IVXLivxl]{1,7})|([0-9]{1,2})|[a-zA-Z]))*[\-:\.)]?\s", ' ' + txt + ' ')
+    
+    if possible_nums is None:
         return []
-
     else:
         # Normalizing different
-        firstNum = possibleNums[0]
-        firstNum = firstNum[:-1]
-        firstNum = firstNum.replace('-', '.')
-        firstNum = firstNum.replace(',', '.')
-        firstNum = firstNum.replace(':', '.')
-        firstNum = firstNum.replace(')', '.')
-        firstNum = firstNum.replace('(', '')
-        firstNum = firstNum.replace('§', '')
-        firstNum = firstNum.replace(' ', '.')
-        firstNum = firstNum.replace('\xa0', '.')
+        first_num = possible_nums[0][:-1]
+        first_num = re.sub(r'[-,:)\(§\s\xa0]', '.', first_num)
 
         # Splitting string into different levels at dots.
-        nums = firstNum.split('.')
+        nums = first_num.split('.')
         return translateNums(nums)
-
 
 
 
@@ -40,13 +36,12 @@ def getNumeration(txt):
 def translateNums(nums):
     toReturn = []
     for n in nums:
-        if re.search("[IVXLivxl]{1,7}", n):
+        if roman_pattern.search(n):
             toReturn.append((RomanNumber(n).getValue(), EnumerationType.Roman))
-        elif re.search("[0-9]{1,2}", n):
+        elif numeric_pattern.search(n):
             toReturn.append((int(n), EnumerationType.Numeric))
-        elif re.search("[a-zA-Z]", n):
+        elif alphabetic_pattern.search(n):
             toReturn.append((ord(n.lower()) - 96, EnumerationType.Alphabetic))
-
 
     return toReturn
 
