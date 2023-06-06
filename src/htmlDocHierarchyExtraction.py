@@ -19,11 +19,11 @@ def tree_to_string(node, depth=0):
     """
     indent = '#' * depth if isinstance(node, BlockNode) else ''
     if isinstance(node, BlockNode):
-        result = f'\n{indent} {node.headline}\n'
+        result = f'\n{indent} {node.headline}'
         for child in node.children:
             result += tree_to_string(child, depth + 1)
     else:
-        result = f'{node.text}\n'
+        result = f'\n{node.text}\n'
     return result
 
 
@@ -45,25 +45,25 @@ def process_file(filename, sess_driver):
 
     with open(input_file, encoding='utf8') as f_in, open(output_file, 'a', encoding='utf8') as f_out:
         print(f"Processing {input_file}")
-
+        
+        # Load Document and Identifier (one per Line)
         for i, line in enumerate(f_in):
             obj = json.loads(line)
             slug = obj.get('slug', 'slug_not_defined_' + str(obj.get('id', '')))
             cleaned_html = obj.get('cleaned_html', '')
             
+            # Extract hierarchy by Common Formatting
+            ## Load the body content into the WebDriver
             link = "data:text/html;charset=utf-8," + urllib.parse.quote(cleaned_html, safe='')
             sess_driver.get(link)
-
+            
+            # Parse the body content
             body_node = parse_tree(sess_driver, extract_style=True)
-            body_node.tag = 'body'
-            body_node.xpath = '/html/body'
+            #body_node.tag = 'body'
+            #body_node.xpath = '/html/body'
             
-            frequent_styles_dict = get_frequency_of_styles(body_node, content_extractor=ContentExtractor.RenderedStyle)
-            default_style = max(frequent_styles_dict, key=frequent_styles_dict.get)
-            
-            hierarchy_tree = extract_hierarchy_visually(body_node, default_style)
-            extract_hierarchy_numerically(hierarchy_tree)
-
+            # Transform bodyNode into hierarchy blocks
+            hierarchyTree = extractHierarchy(bodyNode, ContentExtractor.RenderedStyle)
             text_with_extracted_hierarchy = tree_to_string(hierarchy_tree)
             
             out_obj = {'slug': slug, 'textWithExtractedHierarchy': text_with_extracted_hierarchy}
