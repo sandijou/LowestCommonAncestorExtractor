@@ -55,7 +55,7 @@ def separateBlocksRec(nodeList, defaultStyle):
             if nodeList[i].style == headlineStyle:
                 headLineList.append(i)
             # new else if condition to try fallback solution of regex headline matching including spaced-out words
-            if is_valid_headline(nodeList[i].text):
+            elif is_valid_headline(nodeList[i].text):
                 headLineList.append(i)
                 #print(f"valid headline with headlineStyle: {headlineStyle}: \n{repr(nodeList[i].text)}\n")
         
